@@ -1,4 +1,4 @@
-package tarjan_incrementale;
+
 
 public class Main {
 
