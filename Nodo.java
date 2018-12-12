@@ -1,5 +1,3 @@
-package tarjan_incrementale;
-
 import java.util.LinkedList;
 //import java.util.ListIterator;
 
@@ -115,7 +113,7 @@ public class Nodo {
 		return this.getCfc().contains(v);
 	}
 	
-	//verifica se c'è una cfc
+	//verifica se c'Ã¨ una cfc
 	public boolean testLoop(Nodo w) {
 		Nodo x=this.getInLink();
 		while(x!=w && x!=null) {
@@ -153,7 +151,7 @@ public class Nodo {
 		this.getInLink().removeOutLink(this); 											
 	}
 		
-	// this è base(padre)
+	// this Ã¨ base(padre)
 	// crea una componente connessa gestendo outlink e inlink
 	public void addTocomponent(Nodo collapse) {
 		this.getCfc().addAll(collapse.getCfc());
