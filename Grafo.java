@@ -1,4 +1,3 @@
-package tarjan_incrementale;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -29,7 +28,7 @@ public class Grafo {
 	}
 	
 	
-	//dati i nodi v e w verifica se v>w (vero se v é più giovane di w (v>=w)) 
+	//dati i nodi v e w verifica se v>w (vero se v Ã© piÃ¹ giovane di w (v>=w)) 
 	private boolean threadPrecedes(Nodo w,Nodo v) {
 		int a=this.getListaNodi().indexOf(v);
 		int b=this.getListaNodi().indexOf(w);
@@ -38,7 +37,7 @@ public class Grafo {
 	}
 	
 		
-	//cerca nella ListaNodi se c'è un vertice di nome v
+	//cerca nella ListaNodi se c'Ã¨ un vertice di nome v
 	private Nodo trovaV(int v) {
 		Nodo n=null;
 		boolean b=false;
@@ -122,7 +121,7 @@ public class Grafo {
 	// sposta il sotto-albero con radice w come figli di v
 	private void moveSubTree(Nodo base, Nodo nodo) {
 		try{nodo.removeSubTree();}
-		catch(java.lang.NullPointerException Exe) {}//VA FATTO SOLO SE IL PADRE DI NODO NON è NULL=> AGGGIUNGIAMO UN TRY CATCH PER L'ECCEZIONE
+		catch(java.lang.NullPointerException Exe) {}//VA FATTO SOLO SE IL PADRE DI NODO NON Ã¨ NULL=> AGGGIUNGIAMO UN TRY CATCH PER L'ECCEZIONE
 		this.insertTree(base,nodo);
 		LinkedList<Nodo> A=this.getListaNodi();
 		List<Nodo> SubList=null;
