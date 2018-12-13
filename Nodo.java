@@ -3,7 +3,6 @@ import java.util.LinkedList;
 
 public class Nodo {
 	
-	private int nome;
 	private LinkedList<Nodo> outLink;// figli
 	private Nodo inLink;//padre
 	private LinkedList<Nodo> inPointers;//puntatori entranti
@@ -12,7 +11,6 @@ public class Nodo {
 	
 	//costruttore
 	public Nodo(int n,Nodo padre) {
-		this.setNome(n);
 		this.setCfc(new LinkedList<Integer>() );
 		this.addCfc(n);
 		this.setOutLink(new LinkedList<Nodo>());
@@ -57,15 +55,6 @@ public class Nodo {
 		this.getOutPointers().remove(nodo);
 		nodo.getInPointers().remove(this);
 		
-	}
-
-	//getter e setters di nome
-	public int getNome() {
-		return nome;
-	}
-
-	public void setNome(int nome) {
-		this.nome = nome;
 	}
 
 	//getters e setters di outLink
@@ -140,7 +129,7 @@ public class Nodo {
 			}
 		}
 	
-	//per stampare la lista trasforma Nome in una stringa
+	//per stampare la lista trasforma Cfc in una stringa
 	public String toString() {
 		return String.valueOf(this.getCfc());
 	}
