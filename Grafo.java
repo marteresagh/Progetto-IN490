@@ -154,19 +154,17 @@ public class Grafo {
 		if(v.testLoop(w))
 			this.collapsePath(w,v);			
 		else if(!(w.testLoop(v))) {
-				if(this.threadPrecedes(w,v) ) {
-					if(!v.getOutPointers().contains(w) ) {
-						v.pushPointer(w);
-					}
-				}else this.moveSubTree(v,w);
+			if(this.threadPrecedes(w,v) ) {
+				v.pushPointer(w);
+			}else this.moveSubTree(v,w);
 		}			
 	}
 	
 	//genera una coppia di interi (v,w) e fa CheckPath
-	public void random() {
+	public void random(int n) {
 		Random random = new Random();
-		int	v= random.nextInt(10);
-		int	w = random.nextInt(10);
+		int	v= random.nextInt(n);
+		int	w = random.nextInt(n);
 		System.out.println("creo l'arco ("+v+","+w+")");
 		Nodo nodov = this.trovaV(v);
 		if(nodov==null) {
@@ -178,7 +176,7 @@ public class Grafo {
 			nodow = new Nodo(w,nodov);
 			this.ordinaLista(nodow);
 			nodov.addOutLink(nodow);			
-		}else if(nodow.getInLink()!=nodov && nodov!=nodow)
+		}else if(nodow.getInLink()!=nodov && nodov!=nodow && !nodow.getInPointers().contains(nodov))
 				this.processBacklink(nodov,nodow); 
 		System.out.println("listanodi in random"+ this.getListaNodi());					
 	}
@@ -198,7 +196,7 @@ public class Grafo {
 			nodow = new Nodo(w,nodov);
 			this.ordinaLista(nodow);
 			nodov.addOutLink(nodow);			
-		}else if(nodow.getInLink()!=nodov && nodov!=nodow)
+		}else if(nodow.getInLink()!=nodov && nodov!=nodow && !nodow.getInPointers().contains(nodov))
 				this.processBacklink(nodov,nodow); 	
 		System.out.println("listanodi in random"+ this.getListaNodi());
 		
