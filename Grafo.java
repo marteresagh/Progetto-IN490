@@ -155,9 +155,7 @@ public class Grafo {
 			this.collapsePath(w,v);			
 		else if(!(w.testLoop(v))) {
 				if(this.threadPrecedes(w,v) ) {
-					if(!v.getOutPointers().contains(w) ) {
-						v.pushPointer(w);
-					}
+					v.pushPointer(w);
 				}else this.moveSubTree(v,w);
 		}			
 	}
@@ -178,7 +176,7 @@ public class Grafo {
 			nodow = new Nodo(w,nodov);
 			this.ordinaLista(nodow);
 			nodov.addOutLink(nodow);			
-		}else if(nodow.getInLink()!=nodov && nodov!=nodow)
+		}else if(nodow.getInLink()!=nodov && nodov!=nodow && !nodow.getInPointers().contains(nodov))
 				this.processBacklink(nodov,nodow); 
 		System.out.println("listanodi in random"+ this.getListaNodi());					
 	}
