@@ -163,10 +163,10 @@ public class Grafo {
 	}
 	
 	//genera una coppia di interi (v,w) e fa CheckPath
-	public void random() {
+	public void random(int n) {
 		Random random = new Random();
-		int	v= random.nextInt(10);
-		int	w = random.nextInt(10);
+		int	v= random.nextInt(n);
+		int	w = random.nextInt(n);
 		System.out.println("creo l'arco ("+v+","+w+")");
 		Nodo nodov = this.trovaV(v);
 		if(nodov==null) {
