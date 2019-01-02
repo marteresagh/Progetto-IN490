@@ -152,12 +152,14 @@ public class Nodo {
 	}
 	
 	//gestisce i puntatori uscenti nella creazione di una cfc
-	private void insertOutPointers( Nodo collapse) {
+	private void insertOutPointers( Nodo collapse, Grafo grafo) {
 		collapse.removePointers(this);
 		for(Nodo item: collapse.getOutPointers()) {
 			item.getInPointers().remove(collapse);
-			if( !this.getOutPointers().contains(item) && !item.testLoop(this) ) { 
+			if( !this.getOutPointers().contains(item) && !item.testLoop(this) && !this.testLoop(item) ) { 
 				this.pushPointer(item);				
+			}else if( this.testLoop(item)) {
+				grafo.collapsePath(item,this);
 			}
 		}	
 		
@@ -165,7 +167,7 @@ public class Nodo {
 
 	// gestisce i puntatori nella creazione di una componente connessa
 	public void removeNodo(Nodo collapse, Grafo grafo) {
-		this.insertOutPointers(collapse);
+		this.insertOutPointers(collapse,grafo);
 		for(Nodo n: collapse.getInPointers()) {	
 			n.getOutPointers().remove(collapse);
 			if(!this.getInPointers().contains(n) && !n.testLoop(this)) {
