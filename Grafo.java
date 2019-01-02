@@ -11,7 +11,7 @@ public class Grafo {
     
 	//costruttore
 	public Grafo() {
-			this.setListaNodi(new LinkedList<Nodo>());
+		this.setListaNodi(new LinkedList<Nodo>());
 	}	
 	
 	//getter e setters di listaNodi
@@ -105,20 +105,20 @@ public class Grafo {
 	}
 	
 	// Scorre il ramo da base a nodo e trasforma base in una componente connessa
-	private void collapsePath(Nodo base,Nodo nodo) {
+	public void collapsePath(Nodo base,Nodo nodo) {
 		Nodo collapse=null;
 		Nodo bnodo=nodo;
 			collapse=this.rootOf(base,bnodo);
 			while (collapse!=null) {
 				base.addTocomponent(collapse);
-				base.removeNodo(collapse);
+				base.removeNodo(collapse,this);
 				this.getListaNodi().remove(collapse);
 				collapse=this.rootOf(base, bnodo);
 			}				
 		System.out.println("trovata componente fortemente connessa" +base.getCfc());
 	}
 	
-	// sposta il sotto-albero con radice w come figli di v
+	// sposta il sotto-albero con radice nodo come figli di base
 	private void moveSubTree(Nodo base, Nodo nodo) {
 		try{nodo.removeSubTree();}
 		catch(java.lang.NullPointerException Exe) {}//VA FATTO SOLO SE IL PADRE DI NODO NON è NULL=> AGGGIUNGIAMO UN TRY CATCH PER L'ECCEZIONE
