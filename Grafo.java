@@ -144,6 +144,7 @@ public class Grafo {
 					if(n.testLoop(m)) {
 						n.removePointers(m);
 						this.collapsePath(m, n);
+						this.controllaPointers(m);
 					}
 				}
 			}
