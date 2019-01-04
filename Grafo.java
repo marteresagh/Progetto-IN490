@@ -116,7 +116,25 @@ public class Grafo {
 				collapse=this.rootOf(base, bnodo);
 			}				
 		System.out.println("trovata componente fortemente connessa" +base.getCfc());
+		
+		//una volta trovata una componente controlla se se ne sono create altre 
+		if(base.getInPointers()!=null ) {
+			for(Nodo n:base.getInPointers()) {
+				if (n.testLoop(base)) {
+					collapsePath(base,n);
+				}
+			}	
+		}
+		
+		if(base.getOutPointers()!=null ) {
+			for(Nodo n:base.getOutPointers()) {
+				if (base.testLoop(n)) {
+					collapsePath(n,base);
+				}
+			}
+		}
 	}
+	
 	
 	// sposta il sotto-albero con radice w come figli di v
 	private void moveSubTree(Nodo base, Nodo nodo) {
