@@ -1,4 +1,5 @@
 import java.util.LinkedList;
+import java.util.ListIterator;
 
 public class Nodo {
 	
@@ -50,6 +51,7 @@ public class Nodo {
 		nodo.addInPointers(this);
 	}
 	
+	
 	public void removePointers(Nodo nodo) {
 		this.getOutPointers().remove(nodo);
 		nodo.getInPointers().remove(this);
@@ -69,6 +71,7 @@ public class Nodo {
 		this.outLink.addLast(nodo);
 	}
 
+	
 	public void removeOutLink(Nodo nodo) {
 		this.outLink.remove(nodo);	
 	}
@@ -101,7 +104,7 @@ public class Nodo {
 		return this.getCfc().contains(v);
 	}
 	
-	//verifica se c'Ã¨ una cfc
+	//verifica se c'è una cfc
 	public boolean testLoop(Nodo w) {
 		Nodo x=this.getInLink();
 		while(x!=w && x!=null) {
@@ -139,43 +142,73 @@ public class Nodo {
 		this.getInLink().removeOutLink(this); 											
 	}
 		
-	// this Ã¨ base(padre)
+	//ciclo modificato
+	// this è base(padre)
 	// crea una componente connessa gestendo outlink e inlink
 	public void addTocomponent(Nodo collapse) {
+		Nodo m=null;
 		this.getCfc().addAll(collapse.getCfc());
 		int i=this.getOutLink().indexOf(collapse);
 		this.getOutLink().addAll(i,collapse.getOutLink());
-		this.getOutLink().remove(collapse);
-		for(Nodo item: collapse.getOutLink()) {
-			item.setInLink(this);				
+		ListIterator<Nodo> itr1 = this.getOutLink().listIterator();
+		while(itr1.hasNext()){
+			m=itr1.next();
+			if (m==collapse) itr1.remove();
+		}
+		Nodo v=null;
+		ListIterator<Nodo> itr = collapse.getOutLink().listIterator();
+		while(itr.hasNext()){
+			 v=itr.next();
+			 v.setInLink(this);
 		}
 	}
 	
+	//modifico il ciclo 
 	//gestisce i puntatori uscenti nella creazione di una cfc
 	private void insertOutPointers( Nodo collapse) {
-		collapse.removePointers(this);
-		for(Nodo item: collapse.getOutPointers()) {
-			if( !this.getOutPointers().contains(item) /*&& !this.getOutLink().contains(item)*/ ) { 
-				this.pushPointer(item);
-				item.getInPointers().remove(collapse);
-			}else{
-				item.getInPointers().remove(collapse);
-			}
-		}	
 		
+		collapse.removePointers(this);
+		Nodo v=null;
+		 ListIterator<Nodo> itr = collapse.getOutPointers().listIterator();
+		 while(itr.hasNext()){
+			 v=itr.next();
+			 v.getInPointers().remove(collapse);
+			 if( !this.getOutPointers().contains(v) /*&& !this.getOutLink().contains(item)*/ ) { 
+				 this.pushPointer(v);
+				}	
+		 }
 	}
 
+	//ciclo modificato
 	// gestisce i puntatori nella creazione di una componente connessa
 	public void removeNodo(Nodo collapse) {
+		
+		Nodo n=null;
+		Nodo m=null;
 		this.insertOutPointers(collapse);
-		for(Nodo n: collapse.getInPointers()) {	
+		
+		ListIterator<Nodo> itr = collapse.getInPointers().listIterator();
+		while(itr.hasNext()){
+			
+			n=itr.next();
+			ListIterator<Nodo> itr1 =  n.getOutPointers().listIterator();
 			if(!this.getInPointers().contains(n) ) {
-				n.getOutPointers().remove(collapse);
+				
+				while(itr1.hasNext()){
+					m=itr1.next();
+					if (m==collapse) itr1.remove();
+				}
 				n.pushPointer(this);
 			}else {
-				n.getOutPointers().remove(collapse);
+				
+				while(itr1.hasNext()){
+					m=itr1.next();
+					if (m==collapse) itr1.remove();
+				}
+				
 			}
 		}
 	}
+	
 	
 }
