@@ -56,13 +56,19 @@ public class Grafo {
 	
 	
 	//trovaV con il dizionario: associo ad ogni numero il nodo corrispondente,
-	//se la chiave ha un associazione allora il nodo esiste e lo restituisce
+	//se la chiave ha un associazione allora il nodo esiste
+	//ma devo per forza cercare tra le CFC per sapere quale nodo restituire!! 
 	public Nodo trovaV(int v) {
-		Nodo nodov=null;
+		Nodo n=null;
 		if(this.getElenco().containsKey(v)) {
-			nodov=this.getElenco().get(v);
+			ListIterator<Nodo> i=listaNodi.listIterator();
+			boolean b=false;
+			while( b==false && i.hasNext()){
+				n=i.next();
+				b=n.equals(v);
+			} 
 		}
-		return nodov;
+		return n;
 	}
 	
 	/*
@@ -224,7 +230,6 @@ public class Grafo {
 	private void processBacklink(Nodo v, Nodo w) {
 		
 		if(v.testLoop(w)) {
-			
 			this.collapsePath(w,v);	
 		}
 		else if(!(w.testLoop(v))) {
@@ -255,7 +260,7 @@ public class Grafo {
 			this.setElenco(w,nodow);
 			this.ordinaLista(nodow);
 			nodov.addOutLink(nodow);			
-		}else if(nodow.getInLink()!=nodov && nodov!=nodow)
+		}else if(nodow.getInLink()!=nodov && nodov!=nodow )
 				this.processBacklink(nodov,nodow); 
 		System.out.println("listanodi in random"+ this.getListaNodi());					
 	}
@@ -263,7 +268,7 @@ public class Grafo {
 	
 	//funzione random modificata per la costruzione a mano di un albero specifico 
 	public void random1(int v,int w) {
-		boolean b=false;
+		
 		System.out.println("creo l'arco ("+v+","+w+")");
 		Nodo nodov = this.trovaV(v);
 		if(nodov==null) {
@@ -273,14 +278,15 @@ public class Grafo {
 		}
 		
 		Nodo nodow = this.trovaV(w);
+		
 		if(nodow==null) {
+		
 			nodow = new Nodo(w,nodov);
 			this.setElenco(w,nodow);//
 			this.ordinaLista(nodow);
-			
 			nodov.addOutLink(nodow);			
-		}else if(nodow.getInLink()!=nodov && nodov!=nodow)
-				this.processBacklink(nodov,nodow); 	
+		}else if(nodow.getInLink()!=nodov && nodov!=nodow){
+				this.processBacklink(nodov,nodow); 	}
 		System.out.println("listanodi in random"+ this.getListaNodi());
 		
 	}

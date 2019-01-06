@@ -124,35 +124,22 @@ public class Main {
 		
 	 */
 		
-		g.random1(9,3);
-		g.random1(5,9);
-		g.random1(2,3);
-		g.random1(6,1);
-		g.random1(6,7);
-		g.random1(7,5);
-		g.random1(5,2);
-		g.random1(8,7);
-		g.random1(8,6);
-		g.random1(2,6);
-		g.random1(3,1);
+		g.random1(4,1);
 		g.random1(1,2);
-		g.random1(12,9);
-		g.random1(10,9);
-		g.random1(12,4);
-		g.random1(5,7);
-		g.random1(8,11);
-		g.random1(7,10);
-		g.random1(7,9);
-		g.random1(10,9);
-		g.random1(10,11);
-		g.random1(7,11);
-	
+		g.random1(5,2);
+		g.random1(4,5);
+		g.random1(4,2);
+		g.random1(3,3);
+		g.random1(1,3);
+		g.random1(3,4);
+		
+		g.random1(5,3);
+		
 		Collection<Nodo> l=g.getElenco().values();
 		System.out.println(l);
 		Set<Integer> k=g.getElenco().keySet();
 		System.out.println(k);
-	
-		
+				
 	}
 		
 }
