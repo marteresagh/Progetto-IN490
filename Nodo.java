@@ -1,4 +1,5 @@
 import java.util.LinkedList;
+import java.util.ListIterator;
 
 public class Nodo {
 	
@@ -155,25 +156,28 @@ public class Nodo {
 	private void insertOutPointers( Nodo collapse) {
 		collapse.removePointers(this);
 		for(Nodo item: collapse.getOutPointers()) {
-			if( !this.getOutPointers().contains(item) /*&& !this.getOutLink().contains(item)*/ ) { 
-				this.pushPointer(item);
-				item.getInPointers().remove(collapse);
-			}else{
-				item.getInPointers().remove(collapse);
+			item.getInPointers().remove(collapse);
+			if( !this.getOutPointers().contains(item) && !item.testLoop(this)  ) { 
+				this.pushPointer(item);				
 			}
 		}	
 		
 	}
 
 	// gestisce i puntatori nella creazione di una componente connessa
-	public void removeNodo(Nodo collapse) {
+	public void removeNodo(Nodo collapse, Grafo grafo) {
 		this.insertOutPointers(collapse);
-		for(Nodo n: collapse.getInPointers()) {	
-			if(!this.getInPointers().contains(n) ) {
-				n.getOutPointers().remove(collapse);
+		ListIterator<Nodo> i=collapse.getInPointers().listIterator();
+		Nodo n=null;
+		while( i.hasNext()){
+			n=i.next();
+			i.remove();
+			n.getOutPointers().remove(collapse);
+			if(!this.getInPointers().contains(n) && !n.testLoop(this)) {
 				n.pushPointer(this);
-			}else {
-				n.getOutPointers().remove(collapse);
+			}else if (n.testLoop(this) ) {
+				grafo.collapsePath(this,n);
+				i=collapse.getInPointers().listIterator();
 			}
 		}
 	}

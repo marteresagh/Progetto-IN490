@@ -11,7 +11,7 @@ public class Grafo {
     
 	//costruttore
 	public Grafo() {
-			this.setListaNodi(new LinkedList<Nodo>());
+		this.setListaNodi(new LinkedList<Nodo>());
 	}	
 	
 	//getter e setters di listaNodi
@@ -105,67 +105,55 @@ public class Grafo {
 	}
 	
 	// Scorre il ramo da base a nodo e trasforma base in una componente connessa
-	private void collapsePath(Nodo base,Nodo nodo) {
+	public void collapsePath(Nodo base,Nodo nodo) {
 		Nodo collapse=null;
-		Nodo bnodo=nodo;
-			collapse=this.rootOf(base,bnodo);
+  		collapse=this.rootOf(base,nodo);
 			while (collapse!=null) {
 				base.addTocomponent(collapse);
-				base.removeNodo(collapse);
+				System.out.println("trovata componente fortemente connessa" +base.getCfc());
+				base.removeNodo(collapse,this);
 				this.getListaNodi().remove(collapse);
-				collapse=this.rootOf(base, bnodo);
-			}				
-		System.out.println("trovata componente fortemente connessa" +base.getCfc());
-		
-		//una volta trovata una componente controlla se se ne sono create altre 
-		if(base.getInPointers()!=null ) {
-			for(Nodo n:base.getInPointers()) {
-				if (n.testLoop(base)) {
-					collapsePath(base,n);
-				}
+				collapse=this.rootOf(base, nodo);
 			}	
-		}
 		
-		if(base.getOutPointers()!=null ) {
-			for(Nodo n:base.getOutPointers()) {
-				if (base.testLoop(n)) {
-					collapsePath(n,base);
-				}
-			}
-		}
 	}
 	
-	
-	// sposta il sotto-albero con radice w come figli di v
 	private void moveSubTree(Nodo base, Nodo nodo) {
-		try{nodo.removeSubTree();}
-		catch(java.lang.NullPointerException Exe) {}//VA FATTO SOLO SE IL PADRE DI NODO NON è NULL=> AGGGIUNGIAMO UN TRY CATCH PER L'ECCEZIONE
+		try{
+			Nodo padre=nodo.getInLink();
+			nodo.removeSubTree();
+			if(base.testLoop(padre) && padre!=null)
+			padre.removePointers(nodo);
+		}catch(java.lang.NullPointerException Exe) {}
 		this.insertTree(base,nodo);
 		LinkedList<Nodo> A=this.getListaNodi();
 		List<Nodo> SubList=null;
-		try{SubList=new LinkedList<Nodo>(A.subList(A.indexOf(nodo),A.indexOf(nodo.ultimaFoglia())+1));
+		SubList=new LinkedList<Nodo>(A.subList(A.indexOf(nodo),A.indexOf(nodo.ultimaFoglia())+1));
 		for(Nodo n: SubList) {
 			this.controllaPointers(n);
-			}
 		}
-		catch(java.lang.IndexOutOfBoundsException Exe) {}
 	}
-		
-		
-	private void controllaPointers(Nodo n) {		
-		try {
-			for(Nodo m: n.getOutPointers()) {
-				if (this.threadPrecedes(n,m) && !(n.testLoop(m)) && n!=m) {
-					n.removePointers(m);
+
+	// controlla i puntatori uscenti dei nodi dell'albero spostato con moveSubTree
+	private void controllaPointers(Nodo n) {	
+		ListIterator<Nodo> itr =  n.getOutPointers().listIterator();
+		Nodo m=null;
+		Boolean a=false;
+		while(itr.hasNext() && a==false) {
+			m=itr.next();
+			if (this.threadPrecedes(n,m) || (n.testLoop(m)) ) {
+				itr.remove();
+				m.getInPointers().remove(n);
+				if(!(n.testLoop(m)) && n!=m && !m.testLoop(n)) {
 					this.moveSubTree(n,m);
-				}else { 
-					if(n.testLoop(m)) {
-						n.removePointers(m);
-						this.collapsePath(m, n);
-					}
+					itr=n.getOutPointers().listIterator();
+				}else if(n.testLoop(m) && n!=m) {
+					a=true;
+					this.collapsePath(m,n);
+					this.controllaPointers(m);
 				}
-			}
-		}catch(java.util.ConcurrentModificationException Exe) {}	
+			}			
+		}
 	}
 	
 	private void processBacklink(Nodo v, Nodo w) {
@@ -196,35 +184,24 @@ public class Grafo {
 			nodov.addOutLink(nodow);			
 		}else if(nodow.getInLink()!=nodov && nodov!=nodow && !nodow.getInPointers().contains(nodov))
 				this.processBacklink(nodov,nodow); 
-		System.out.println("listanodi in random"+ this.getListaNodi());					
 	}
 	
-	/*
-	//funzione random modificata per la costruzione a mano di un albero specifico 
+	//funzione random modificata per la costruzione di un grafo specifico 
 	public void random1(int v,int w) {
 		System.out.println("creo l'arco ("+v+","+w+")");
 		Nodo nodov = this.trovaV(v);
 		if(nodov==null) {
 			nodov =new Nodo(v,null);			
 			this.addListaNodi(nodov);		
-		}
-		
+		}		
 		Nodo nodow = this.trovaV(w);
 		if(nodow==null) {
 			nodow = new Nodo(w,nodov);
 			this.ordinaLista(nodow);
 			nodov.addOutLink(nodow);			
-		}else if(nodow.getInLink()!=nodov && nodov!=nodow)
+		}else if(nodow.getInLink()!=nodov && nodov!=nodow && !nodow.getInPointers().contains(nodov))
 				this.processBacklink(nodov,nodow); 	
-		System.out.println("listanodi in random"+ this.getListaNodi());
-		
 	}
-	*/
 	
-	//stampa una lista di nodi
-	public void printLista(LinkedList<Nodo> l) {
-		System.out.println(l);
-	}
-
 }
 
