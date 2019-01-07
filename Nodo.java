@@ -166,12 +166,17 @@ public class Nodo {
 	// gestisce i puntatori nella creazione di una componente connessa
 	public void removeNodo(Nodo collapse, Grafo grafo) {
 		this.insertOutPointers(collapse);
-		for(Nodo n: collapse.getInPointers()) {	
+		ListIterator<Nodo> i=collapse.getInPointers().listIterator();
+		Nodo n=null;
+		while( i.hasNext()){
+			n=i.next();
+			i.remove();
 			n.getOutPointers().remove(collapse);
 			if(!this.getInPointers().contains(n) && !n.testLoop(this)) {
 				n.pushPointer(this);
-			}else if (n.testLoop(this)) {
+			}else if (n.testLoop(this) ) {
 				grafo.collapsePath(this,n);
+				i=collapse.getInPointers().listIterator();
 			}
 		}
 	}
