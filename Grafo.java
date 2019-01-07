@@ -130,6 +130,7 @@ public class Grafo {
 		this.insertTree(base,nodo);
 		LinkedList<Nodo> A=this.getListaNodi();
 		List<Nodo> SubList=null;
+		SubList=new LinkedList<Nodo>(A.subList(A.indexOf(nodo),A.indexOf(nodo.ultimaFoglia())+1));
 		for(Nodo n: SubList) {
 			this.controllaPointers(n);
 		}
@@ -185,7 +186,6 @@ public class Grafo {
 			nodov.addOutLink(nodow);			
 		}else if(nodow.getInLink()!=nodov && nodov!=nodow && !nodow.getInPointers().contains(nodov))
 				this.processBacklink(nodov,nodow); 
-		System.out.println("listanodi in random"+ this.getListaNodi());					
 	}
 	
 	//funzione random modificata per la costruzione di un grafo specifico 
