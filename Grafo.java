@@ -107,19 +107,17 @@ public class Grafo {
 	// Scorre il ramo da base a nodo e trasforma base in una componente connessa
 	public void collapsePath(Nodo base,Nodo nodo) {
 		Nodo collapse=null;
-		Nodo bnodo=nodo;
-			collapse=this.rootOf(base,bnodo);
+  		collapse=this.rootOf(base,nodo);
 			while (collapse!=null) {
 				base.addTocomponent(collapse);
 				System.out.println("trovata componente fortemente connessa" +base.getCfc());
 				base.removeNodo(collapse,this);
 				this.getListaNodi().remove(collapse);
-				collapse=this.rootOf(base, bnodo);
+				collapse=this.rootOf(base, nodo);
 			}	
 		
 	}
 	
-	// sposta il sotto-albero con radice nodo come figli di base
 	private void moveSubTree(Nodo base, Nodo nodo) {
 		try{
 			Nodo padre=nodo.getInLink();
@@ -162,9 +160,9 @@ public class Grafo {
 		if(v.testLoop(w))
 			this.collapsePath(w,v);			
 		else if(!(w.testLoop(v))) {
-			if(this.threadPrecedes(w,v) ) {
-				v.pushPointer(w);
-			}else this.moveSubTree(v,w);
+				if(this.threadPrecedes(w,v) ) {
+					v.pushPointer(w);
+				}else this.moveSubTree(v,w);
 		}			
 	}
 	
