@@ -1,3 +1,4 @@
+import java.math.BigInteger;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
@@ -7,11 +8,11 @@ public class Nodo {
 	private Nodo inLink;//padre
 	private LinkedList<Nodo> inPointers;//puntatori entranti
 	private LinkedList<Nodo> outPointers;//puntatori uscenti
-	private LinkedList<Integer> cfc;// elementi della cfc
+	private LinkedList<BigInteger> cfc;// elementi della cfc
 	
 	//costruttore
-	public Nodo(int n,Nodo padre) {
-		this.setCfc(new LinkedList<Integer>() );
+	public Nodo(BigInteger n,Nodo padre) {
+		this.setCfc(new LinkedList<BigInteger>() );
 		this.addCfc(n);
 		this.setOutLink(new LinkedList<Nodo>());
 		this.setInLink(padre);
@@ -87,20 +88,20 @@ public class Nodo {
 
 
 	//getters e setters di cfc
-	public LinkedList<Integer> getCfc() {
-		return cfc;
+	public LinkedList<BigInteger> getCfc() {
+		return this.cfc;
 	}
 
-	public void setCfc(LinkedList<Integer> cfc) {
+	public void setCfc(LinkedList<BigInteger> cfc) {
 		this.cfc = cfc;
 	}
 	
-	public void addCfc(int n) {
+	public void addCfc(BigInteger n) {
 		this.cfc.add(n);
 	}
 	
 	//per funzione trovaV di grafo
-	public boolean equals(int v) {
+	public boolean equals(BigInteger v) {
 		return this.getCfc().contains(v);
 	}
 	
